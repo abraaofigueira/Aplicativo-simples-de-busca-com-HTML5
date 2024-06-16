@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca Web</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding-top: 20px;
+        }
+        .search-container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-bottom: 2px solid magenta;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .search-container input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid magenta;
+            border-radius: 4px;
+            outline: none;
+        }
+        .search-container input[type="submit"], .search-container button {
+            background-color: blue;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .search-container input[type="submit"]:hover, .search-container button:hover {
+            background-color: darkblue;
+        }
+        .results-container {
+            padding-top: 100px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        iframe {
+            width: 100%;
+            height: calc(100vh - 100px);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <form id="searchForm">
+            <input type="text" id="query" placeholder="Digite sua busca aqui...">
+            <input type="submit" value="Buscar">
+            <button type="button" id="downloadBtn">Baixar PDF</button>
+        </form>
+    </div>
+    <div class="results-container" id="resultsContainer">
+        <iframe id="resultsFrame"></iframe>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var query = document.getElementById('query').value;
+            if (query) {
+                var url = 'https://www.google.com/search?q=' + encodeURIComponent(query) + '&igu=1';
+                document.getElementById('resultsFrame').src = url;
+            }
+        });
+
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            var element = document.getElementById('resultsFrame').contentWindow.document.body;
+            html2pdf(element, {
+                margin:       1,
+                filename:     'resultados_busca.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            });
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+</body>
+</html>
