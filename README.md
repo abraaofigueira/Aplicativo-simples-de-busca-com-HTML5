@@ -1,4 +1,4 @@
-###Abraão Figueira
+##Abraão Figueira
 ## Aplicativo Simples de Busca com HTML5
 
 Este é um aplicativo simples de busca desenvolvido com HTML5.
